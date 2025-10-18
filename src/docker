@@ -1,0 +1,22 @@
+# Use official Node.js 18 image as base
+FROM node:18-bullseye
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Copy package files and install dependencies first (for caching)
+COPY package*.json ./
+
+RUN npm install
+
+# Copy source files
+COPY . .
+
+# Expose app port for health/readiness probes
+EXPOSE 8080
+
+# Make start.sh executable
+RUN chmod +x start.sh
+
+# Entry point to start the orchestrator
+CMD ["./start.sh"]
